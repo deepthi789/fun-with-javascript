@@ -50,6 +50,34 @@ class DoublyLinkedList extends LinkedList {
     }
   }
 
+  removeAt(index) {
+    if (index < 0 || index >= this.size()) {
+      return false;
+    }
+    const previousItem = super.getElementAt(index - 1);
+    let removedEl;
+    if (index === 0) {
+      // first item
+      removedEl = super.removeAt(index);
+      if (this.size() === 0) {
+        this.tail = null;
+      } else {
+        this.head.previous = null;
+      }
+    } else if (index === this.size() - 1) {
+      // last item
+      removedEl = super.removeAt(index);
+      this.tail = previousItem;
+      this.tail.next = null;
+    } else {
+      // between first and last item
+      removedEl = super.removeAt(index);
+      previousItem.next = removedEl.next;
+      removedEl.next.previous = previousItem;
+    }
+    return removedEl;
+  }
+
   clear() {
     super.clear();
     this.tail = null;
